@@ -4,6 +4,7 @@ package com.argumedo.kevin.beerapp;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -43,8 +44,8 @@ public class BeerOfTheWeek extends ActionBarActivity
 
     public void startLoadTask(Context c){
         if (isOnline()) {
-//            CallAPI task = new CallAPI();
-//            task.execute();
+            CallAPI task = new CallAPI();
+            task.execute();
 
         } else {
             Toast.makeText(c, "Not online", Toast.LENGTH_LONG).show();
@@ -56,6 +57,30 @@ public class BeerOfTheWeek extends ActionBarActivity
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return (networkInfo != null && networkInfo.isConnected());
+    }
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 
 
@@ -114,8 +139,10 @@ public class BeerOfTheWeek extends ActionBarActivity
 
                 if(fBeer != null)
                 {
-                    fName.setText(fBeer.get(0).getName());
+                    fName.setText(fBeer.get(0).getName() + " ABV(" + fBeer.get(0).getAbv() + "%)");
                     fDesc.setText(fBeer.get(0).getDescription());
+                    new DownloadImageTask((ImageView) findViewById(R.id.featuredPic))
+                            .execute(fBeer.get(0).getPic());
 
                 }
                 else

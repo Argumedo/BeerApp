@@ -17,26 +17,6 @@
         android:paddingBottom="20sp"/>
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Featured Beer of the week is : "
-        android:layout_alignBottom="@+id/title"
-        android:layout_centerHorizontal="true"
-        android:paddingBottom="15sp"
-        android:textSize="20sp"
-        android:id="@+id/featured"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="mmm"
-        android:layout_alignBottom="@+id/featured"
-        android:layout_centerHorizontal="true"
-        android:textSize="20sp"
-        android:id="@+id/botw"/>
-
-
     <GridLayout
         android:layout_alignParentBottom="true"
         android:id="@+id/numbers"
